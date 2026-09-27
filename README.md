@@ -37,7 +37,7 @@ ce qui se passe — sans critère de validité imposé, sans compétition : on m
 | **2** | [`PROTOCOLE.md`](PROTOCOLE.md) | Critères et tolérances **figés avant exécution** (R5). |
 | **3** | [`spec_physics.md`](spec_physics.md) | Les hypothèses H1–H4 et le milieu, écrits avant le moteur. |
 | **4** | [`RAPPORT.md`](RAPPORT.md) | Les résultats, les échecs et les 6 bugs documentés. |
-| **5** | [`visualisation.html`](visualisation.html) | **Le couloir du photon en 3D** — JavaScript pur, aucune dépendance, ouvre-le dans un navigateur. |
+| **5** | [`visualisation.html`](visualisation.html) | **Le couloir du photon en 3D interactive** — JavaScript pur, zéro dépendance. Version en ligne : **[jonathansearch.github.io/RATISS-PHOTON](https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html)** |
 
 ## 📊 Les verdicts (tous rejouables, chiffres dans `resultats/`)
 
@@ -77,14 +77,18 @@ python3 outils/figures.py   # → assets/fig_*.png (numpy + matplotlib)
 
 </div>
 
-## 🌌 La vue 3D — JavaScript pur, zéro dépendance
+## 🌌 La vue 3D — animation du couloir (données scellées)
 
-[`visualisation.html`](visualisation.html) : la surface **hauteur = |ψ(z,y)|²**, **couleur = phase**,
-rotation à la souris, zoom à la molette — rendu Canvas 2D par algorithme du peintre,
-**pas de Three.js**, **pas de CDN**, 10 Ko, fonctionne hors ligne. Régénération :
+<img src="assets/vue3d.gif" width="100%" alt="vue 3D du couloir : hauteur = |psi|², couleur = phase">
+
+**Rotation interactive en JavaScript pur** (Canvas 2D, algorithme du peintre, pas de Three.js,
+pas de CDN, 10 Ko, hors ligne) : [`visualisation.html`](visualisation.html) — et la version
+**en ligne sur GitHub Pages** : <https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html>.
+Rotation à la souris, zoom à la molette, relief réglable. Régénération :
 
 ```bash
-python3 outils/exporter_vue3d.py
+python3 outils/exporter_vue3d.py   # la version interactive (HTML autonome)
+python3 outils/gif_vue3d.py        # l'animation de préview du README
 ```
 
 ## ▶️ Rejouer (R7 : une commande, un étranger, zéro permission)
