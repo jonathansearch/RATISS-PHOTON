@@ -2,104 +2,189 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>RATISS-PHOTON — le couloir du photon en 3D (JS pur)</title>
 <style>
-  html,body{margin:0;height:100%;background:#060813;color:#e2e8f0;font-family:Georgia,serif;overflow:hidden}
-  #ui{position:fixed;top:10px;left:14px;z-index:5;background:rgba(6,8,19,.82);border:1px solid #1e2a45;
-      border-radius:10px;padding:10px 14px;max-width:430px}
-  h1{font-size:15px;margin:0 0 4px;color:#99f6e4;letter-spacing:.5px}
-  p{margin:2px 0;font-size:11.5px;color:#8ba3c7;line-height:1.45}
+  html,body{margin:0;height:100%;background:#060813;color:#e2e8f0;
+    font-family:Georgia,serif;overflow:hidden;touch-action:none}
+  #ui{position:fixed;top:10px;left:10px;right:10px;z-index:5;
+      background:linear-gradient(135deg,rgba(6,8,19,.92),rgba(11,17,34,.82));
+      border:1px solid #1e2a45;border-radius:12px;padding:10px 14px;max-width:470px}
+  h1{font-size:14.5px;margin:0 0 4px;color:#99f6e4;letter-spacing:.4px}
+  p{margin:2px 0;font-size:11.5px;color:#8ba3c7;line-height:1.5}
   b{color:#e2e8f0}
-  .aide{color:#5b6b8c;font-size:10.5px;margin-top:6px}
-  canvas{display:block}
-  input[type=range]{accent-color:#2dd4bf;width:150px}
+  .aide{color:#5b6b8c;font-size:10.5px;margin-top:5px}
+  canvas{display:block;position:fixed;inset:0}
+  input[type=range]{accent-color:#2dd4bf;width:120px;vertical-align:middle}
+  label{white-space:nowrap}
 </style>
 </head>
 <body>
 <div id="ui">
   <h1>🧮 RATISS-PHOTON — le couloir du photon (JS pur, zéro dépendance)</h1>
-  <p><b>Hauteur</b> = |ψ(z,y)|² — la densité de présence du photon unique.<br>
-     <b>Couleur</b> = phase de ψ : cyan → turquoise → blanc (un tour complet = 2π).<br>
-     Deux fentes à z = 360 : la lumière emprunte tous les chemins, et ça se voit.</p>
-  <p><b>Rotation :</b> glisser la souris · <b>Zoom :</b> molette ·
-     <label>Relief <input id="relief" type="range" min="0" max="300" value="120"></label>
-     <label><input id="auto" type="checkbox" checked> rotation auto</label></p>
+  <p><b>Hauteur</b> = |ψ(z,y)|² — densité de présence du photon unique.
+     <b>Couleur</b> = phase de ψ. Les <b>deux fentes</b> (blanc, z=360) ouvrent
+     tous les chemins ; la <b>plaque</b> (ambre, z=640) teste les chemins sombres ;
+     à l'écran (z=920), la <b>courbe d'interférence</b> réelle du monde.</p>
+  <p><b>Rotation</b> : glisser (souris ou doigt) · <b>Zoom</b> : molette / pincer ·
+     <label>Relief <input id="relief" type="range" min="20" max="300" value="130"></label>
+     <label><input id="auto" type="checkbox" checked> rotation auto</label>
+     <label><input id="photon" type="checkbox" checked> photon</label></p>
   <p class="aide">Étiquette de terrain : 🧮 calcul — monde simulé RATISS, aucun photon matériel blessé. 😉</p>
 </div>
 <canvas id="c"></canvas>
 <script>
-const NZ=15, NY=160, DZ=760.0, DY=1.0;
+"use strict";
+const NZ=15, NY=160, ZMIN=0.0, ZMAX=920.0;
+const XSPAN=3.2, YW=1.0, HMAX=0.45;
 const amp=Uint8Array.from(atob("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"),c=>c.charCodeAt(0));
 const pha=Uint8Array.from(atob("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"),c=>c.charCodeAt(0));
+const scr=Uint8Array.from(atob("VUIlEi9CQi8SCSU4OBwSOEIlEiUvJSUvQl5xhIRxhI2XhGdxoMbGxsbPz+LixqCqvM/P4uz/9fXivKCXl42gs8/Z2cagjXpeQjg4Ql6El4R6hJeEXkI4OEJeeo2gxtnZz7OgjZeXoLzi9fX/7OLPz7yqoMbi4s/PxsbGxqBxZ4SXjYRxhIRxXkIvJSUvJRIlQjgSHDg4JQkSL0JCLxIlQg=="),c=>c.charCodeAt(0));
+const RIDGE=[80, 54, 52, 51, 51, 50, 50, 52, 48, 53, 50, 47, 56, 55, 53];
+const A=[],P=[];
+for(let i=0;i<NZ;i++){A.push(Array.from(amp.slice(i*NY,(i+1)*NY)));
+                      P.push(Array.from(pha.slice(i*NY,(i+1)*NY)));}
+// palette de phase (identite labo) : cyan -> turquoise -> blanc
+const PAL=[];
+for(let i=0;i<256;i++){const t=i/255, s=Math.PI*2*t;
+  const r=60+110*Math.max(0,Math.sin(s))**2+90*t*t;
+  const g=160+80*Math.sin(s*0.5+1.1);
+  const b=150+80*Math.cos(s*0.7);
+  PAL.push([Math.min(255,r|0),Math.min(255,Math.max(95,g)|0),Math.min(255,Math.max(165,b)|0)]);}
+// etoiles (PRNG graine fixe : determinisme RATISS)
+let seed=20260927;const rnd=()=>{seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;};
+const STARS=[];for(let i=0;i<130;i++)STARS.push([rnd(),rnd(),0.25+0.75*rnd()]);
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
-let W,H;function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight;}rs();onresize=rs;
-let yaw=-0.5,pitch=0.42,zoom=1.0,drag=false,lx=0,ly=0;
-cv.onmousedown=e=>{drag=true;lx=e.clientX;ly=e.clientY;};
-onmouseup=()=>drag=false;
-onmousemove=e=>{if(!drag)return;yaw+=(e.clientX-lx)*0.008;pitch+=(e.clientY-ly)*0.006;
-  pitch=Math.max(-0.1,Math.min(1.25,pitch));lx=e.clientX;ly=e.clientY;};
-onwheel=e=>{e.preventDefault();zoom*=e.deltaY<0?1.12:0.89;zoom=Math.max(0.3,Math.min(6,zoom));};
-// palette de phase (identite labo : cyan -> turquoise -> blanc)
-function coul(t){const s=Math.PI*2*t;
-  const r=40+90*Math.max(0,Math.sin(s))**2+120*t*t;
-  const g=150+90*Math.sin(s*0.5+1);
-  const b=140+90*Math.cos(s*0.7);
-  return [Math.min(255,r),Math.min(255,Math.max(90,g)),Math.min(255,Math.max(160,b))];}
-const PAL=[];for(let i=0;i<256;i++)PAL.push(coul(i/255));
-const A=[],P=[];for(let i=0;i<NZ;i++){A.push(Array.from(amp.slice(i*NY,(i+1)*NY)));
-                                 P.push(Array.from(pha.slice(i*NY,(i+1)*NY)));}
+let W,H,FL;function rs(){W=cv.width=innerWidth*devicePixelRatio;
+  H=cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';
+  cv.style.height=innerHeight+'px';FL=1.55*Math.min(W,H);}rs();onresize=rs;
+let yaw=-0.55,pitch=0.46,zoom=1,drag=false,lx=0,ly=0,pinch0=0,zoom0=1;
+const start=e=>{drag=true;const t=e.touches?e.touches[0]:e;lx=t.clientX;ly=t.clientY;
+  if(e.touches&&e.touches.length===2){pinch0=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);zoom0=zoom;}};
+const move=e=>{if(!drag)return;e.preventDefault();
+  if(e.touches&&e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    zoom=Math.max(0.45,Math.min(3.2,zoom0*d/pinch0));return;}
+  const t=e.touches?e.touches[0]:e;yaw+=(t.clientX-lx)*0.008;pitch+=(t.clientY-ly)*0.006;
+  pitch=Math.max(-0.15,Math.min(1.25,pitch));lx=t.clientX;ly=t.clientY;};
+const end=()=>drag=false;
+cv.addEventListener('mousedown',start);onmouseup=end;onmousemove=move;
+cv.addEventListener('touchstart',start,{passive:false});
+cv.addEventListener('touchmove',move,{passive:false});cv.addEventListener('touchend',end);
+onwheel=e=>{e.preventDefault();zoom*=e.deltaY<0?1.12:0.89;zoom=Math.max(0.45,Math.min(3.2,zoom));};
+const xw=i=>(i-NZ/2)*(XSPAN/NZ), yw=j=>(j-NY/2)*(YW/NY);
+const zw=zr=>(zr-(ZMIN+ZMAX)/2)/(ZMAX-ZMIN)*XSPAN;
+let cy_,sy_,cp_,sp_,DIST=3.6;
 function proj(x,y,z){
-  const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
-  let X=x*cy-z*sy, Z=x*sy+z*cy, Y=y;
-  let Y2=Y*cp-Z*sp, Z2=Y*sp+Z*cp;
-  const f=H*0.55*zoom;
-  return [W/2+X*f, H*0.62-Y2*f, Z2];
+  let X=x*cy_-z*sy_, Z1=x*sy_+z*cy_;
+  let Y=y*cp_-Z1*sp_, Z=y*sp_+Z1*cp_+DIST;
+  const s=FL*zoom/Z;
+  return [W*0.5+X*s, H*0.55-Y*s, Z];
 }
-function dessiner(){
-  ctx.fillStyle='#060813';ctx.fillRect(0,0,W,H);
+function seg(x1,y1,z1,x2,y2,z2,coul,ep,glow){
+  const a=proj(x1,y1,z1),b=proj(x2,y2,z2);
+  ctx.strokeStyle=coul;ctx.lineWidth=ep;ctx.globalAlpha=glow?0.55:0.9;
+  ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();ctx.globalAlpha=1;
+}
+function dessiner(t){
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  const g=ctx.createRadialGradient(W*0.5,H*0.45,0,W*0.5,H*0.45,Math.max(W,H)*0.75);
+  g.addColorStop(0,'#0a1024');g.addColorStop(1,'#04060f');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  for(const s of STARS){ctx.fillStyle=`rgba(200,220,255,${0.5*s[2]})`;
+    ctx.fillRect(s[0]*W,s[1]*H,devicePixelRatio,devicePixelRatio);}
+  cy_=Math.cos(yaw);sy_=Math.sin(yaw);cp_=Math.cos(pitch);sp_=Math.sin(pitch);
   const relief=+document.getElementById('relief').value/100;
-  const hmax=140*relief;
+  const hmax=HMAX*relief;
+  // ---- surface : quadstries tries par profondeur, lumiere additive ----------
   const quads=[];
-  for(let i=0;i<NZ-1;i++){
-    const z0=i*DZ, z1=(i+1)*DZ;
-    for(let j=0;j<NY-1;j++){
-      const y0=(j-NY/2)*DY, y1=(j+1-NY/2)*DY;
-      const a00=A[i][j]/255, a10=A[i+1][j]/255, a01=A[i][j+1]/255, a11=A[i+1][j+1]/255;
-      const lum=(a00+a10+a01+a11)/4;
-      if(lum<0.012)continue;
-      const p00=proj(z0-NZ*DZ/2,y0,a00*hmax), p10=proj(z1-NZ*DZ/2,y0,a10*hmax),
-            p01=proj(z0-NZ*DZ/2,y1,a01*hmax), p11=proj(z1-NZ*DZ/2,y1,a11*hmax);
-      const depth=(p00[2]+p10[2]+p01[2]+p11[2])/4;
-      const pi=Math.round((P[i][j]+P[i+1][j]+P[i][j+1]+P[i+1][j+1])/4);
-      quads.push([depth,p00,p10,p11,p01,pi,lum]);
-    }
+  for(let i=0;i<NZ-1;i++)for(let j=0;j<NY-1;j++){
+    const a00=A[i][j]/255,a10=A[i+1][j]/255,a01=A[i][j+1]/255,a11=A[i+1][j+1]/255;
+    const lum=(a00+a10+a01+a11)/4;
+    if(lum<0.015)continue;
+    const p00=proj(xw(i),yw(j),a00*hmax),p10=proj(xw(i+1),yw(j),a10*hmax),
+          p11=proj(xw(i+1),yw(j+1),a11*hmax),p01=proj(xw(i),yw(j+1),a01*hmax);
+    quads.push([(p00[2]+p10[2]+p11[2]+p01[2])/4,p00,p10,p11,p01,
+                (P[i][j]+P[i+1][j]+P[i][j+1]+P[i+1][j+1])/4,lum]);
   }
   quads.sort((u,v)=>v[0]-u[0]);
+  ctx.globalCompositeOperation='lighter';
   for(const q of quads){
-    const c=PAL[q[5]], l=0.35+0.65*q[6];
-    ctx.fillStyle=`rgb(${c[0]*l|0},${c[1]*l|0},${c[2]*l|0})`;
-    ctx.beginPath();
-    ctx.moveTo(q[1][0],q[1][1]);ctx.lineTo(q[2][0],q[2][1]);
-    ctx.lineTo(q[3][0],q[3][1]);ctx.lineTo(q[4][0],q[4][1]);
-    ctx.closePath();ctx.fill();
+    const c=PAL[q[5]|0],l=0.30+0.75*q[6];
+    ctx.fillStyle=`rgba(${c[0]*l|0},${c[1]*l|0},${c[2]*l|0},${0.28+0.5*q[6]})`;
+    ctx.beginPath();ctx.moveTo(q[1][0],q[1][1]);ctx.lineTo(q[2][0],q[2][1]);
+    ctx.lineTo(q[3][0],q[3][1]);ctx.lineTo(q[4][0],q[4][1]);ctx.closePath();ctx.fill();
   }
-  // fentes + ecran
-  ctx.font='11px Georgia';
-  for(const [z,nom,c] of [[360,'fentes','#f1f5f9'],[640,'plaque','#fbbf24'],[920,'écran','#4ade80']]){
-    const p=proj(z-NZ*DZ/2,-NY/2,0), p2=proj(z-NZ*DZ/2,NY/2,0);
-    if((p[1]-p2[1])*(p[1]-p2[1])<1e9){
-      ctx.strokeStyle=c;ctx.lineWidth=1;ctx.globalAlpha=0.6;
-      ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(p2[0],p2[1]);ctx.stroke();ctx.globalAlpha=1;
-      ctx.fillStyle=c;ctx.fillText(nom,p[0]+4,Math.max(p[1],p2[1])+14);
+  // ---- les fentes (z=360) : mur blanc, deux ouvertures ---------------------
+  const zf=zw(360), zf2=zw(640);
+  const yLo=(42-80)/80*0.5*0+ -0.2375; // moitie-gauche des ouvertures calculee ci-dessous
+  function mur(zpx,coul,ep){
+    const ouvr=[[-78,-42],[42,78]];
+    let prev=-0.5;
+    for(const [a,b] of ouvr){
+      const ya=a/320, yb=b/320;  // px du couloir -> monde (domaine 320 px)
+      seg(zpx,prev,0,zpx,ya,0,coul,ep,glow_mur);
+      prev=yb;
+    }
+    seg(zpx,prev,0,zpx,0.5,0,coul,ep,glow_mur);
+  }
+  let glow_mur=true;
+  mur(zf,'#f1f5f9',2.2*devicePixelRatio);
+  glow_mur=false;
+  // ---- la plaque (z=640) : bande ambre sur la frange sombre ----------------
+  seg(zf2,-0.09375,0,zf2,0.0,0,'#fbbf24',3.2*devicePixelRatio,true);
+  seg(zf2,-0.09375,0,zf2,-0.09375,0,'#fbbf24',2*devicePixelRatio,false);
+  // ---- l'ecran (z=920) : la courbe d'interference REELLE -------------------
+  const zs=zw(920);
+  ctx.beginPath();
+  for(let j=0;j<NY;j++){
+    const p=proj(zs,yw(j),scr[j]/255*hmax*1.05);
+    if(j===0)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);
+  }
+  ctx.strokeStyle='#7df9ff';ctx.lineWidth=2.4*devicePixelRatio;
+  ctx.shadowColor='#38bdf8';ctx.shadowBlur=14;ctx.stroke();ctx.shadowBlur=0;
+  // socle de l'ecran
+  seg(zs,-0.5,0,zs,0.5,0,'rgba(125,249,255,0.35)',1.2*devicePixelRatio,false);
+  // ---- etiquettes ----------------------------------------------------------
+  ctx.globalCompositeOperation='source-over';
+  ctx.font=`${11*devicePixelRatio}px Georgia`;ctx.globalAlpha=0.85;
+  const pe=proj(zf,0.52,0);ctx.fillStyle='#f1f5f9';ctx.fillText('deux fentes',pe[0]-30*devicePixelRatio,pe[1]);
+  const pp=proj(zf2,0.52,0);ctx.fillStyle='#fbbf24';ctx.fillText('plaque',pp[0]-15*devicePixelRatio,pp[1]);
+  const pz=proj(zs,0.52,0);ctx.fillStyle='#7df9ff';ctx.fillText('écran',pz[0]-10*devicePixelRatio,pz[1]);
+  ctx.globalAlpha=1;
+  // ---- le photon : il suit la crete de probabilite -------------------------
+  if(document.getElementById('photon').checked){
+    const k=(t*0.00016)%1.15;
+    if(k<=1){
+      const fi=k*(NZ-1),i0=Math.min(NZ-2,fi|0),fr=fi-i0;
+      const yRidge=(yw(RIDGE[i0])*(1-fr)+yw(RIDGE[i0+1])*fr);
+      const zRidge=((ZMIN+40*(i0+fr))-(ZMIN+ZMAX)/2)/(ZMAX-ZMIN)*XSPAN;
+      const hR=(A[i0][RIDGE[i0]]/255*(1-fr)+A[i0+1][RIDGE[i0+1]]/255*fr)*hmax+0.02;
+      // trainee
+      for(let s=1;s<=10;s++){
+        const fk=Math.max(0,k-s*0.012);if(fk>1)break;
+        const fi2=fk*(NZ-1),j0=Math.min(NZ-2,fi2|0),fr2=fi2-j0;
+        const yT=(yw(RIDGE[j0])*(1-fr2)+yw(RIDGE[j0+1])*fr2);
+        const zT=((ZMIN+40*(j0+fr2))-(ZMIN+ZMAX)/2)/(ZMAX-ZMIN)*XSPAN;
+        const hT=(A[j0][RIDGE[j0]]/255*(1-fr2)+A[j0+1][RIDGE[j0+1]]/255*fr2)*hmax+0.02;
+        const p1=proj(zT,yT,hT),p2=proj(((ZMIN+40*(j0+fr2+0.0001))-(ZMIN+ZMAX)/2)/(ZMAX-ZMIN)*XSPAN,yT,hT+0.0001);
+        ctx.globalCompositeOperation='lighter';
+        ctx.fillStyle=`rgba(180,250,255,${0.32*(1-s/10)})`;
+        ctx.beginPath();ctx.arc(p1[0],p1[1],(6-s*0.4)*devicePixelRatio,0,7);ctx.fill();
+      }
+      const pp2=proj(zRidge,yRidge,hR);
+      ctx.shadowColor='#aef9ff';ctx.shadowBlur=22;
+      ctx.fillStyle='#eafcff';
+      ctx.beginPath();ctx.arc(pp2[0],pp2[1],4.6*devicePixelRatio,0,7);ctx.fill();
+      ctx.shadowBlur=0;
     }
   }
 }
-let t=0;
-function boucle(){
-  if(document.getElementById('auto').checked&&!drag){t+=0.003;yaw=Math.sin(t)*0.7-0.2;}
-  dessiner();requestAnimationFrame(boucle);
+let t0=performance.now();
+function boucle(t){
+  if(document.getElementById('auto').checked&&!drag){yaw+=0.0035;}
+  dessiner(t);requestAnimationFrame(boucle);
 }
-boucle();
+requestAnimationFrame(boucle);
 </script>
 </body>
 </html>
