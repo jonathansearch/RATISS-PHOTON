@@ -1,0 +1,22 @@
+{
+  "date": "2026-09-27",
+  "moteur": "paraxial v2 (i dpsi/dz = -1/2k0 d2psi/dy2)",
+  "graine": 20260927,
+  "unites": "hbarre=m=dy=1, k0=1.4, DZ=2 dans les zones d'evenement",
+  "bugs_corriges_declares": [
+    "B1 source au bord",
+    "B2 fentes decalees",
+    "B3 action du monde vs naive",
+    "B4 gate vortex",
+    "B5 moteur 2D boite -> paraxial"
+  ],
+  "E_CANTON_fidelite_action_paraxiale": 0.9591952469774495,
+  "E_CANTON_fidelite_action_geometrique": 0.9677386969095946,
+  "E_CANTON_RK_pourcent": 2.9320803518049408e-12,
+  "E_F1_decalage_mesure": -1.0,
+  "E_F1_decalage_predit": 0.0,
+  "E_F2_vortex_2f": 326,
+  "E_F2_vortex_1f": 371,
+  "E_F3_sigma_zero_identique": true,
+  "E_F5_accord": true
+}

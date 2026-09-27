@@ -1,0 +1,15 @@
+{
+  "frange_sombre_mesuree_y": -15.0,
+  "plaque": {
+    "phi0": 1.5707963267948966,
+    "demi_bande_px": 15,
+    "y_centre": -15.0,
+    "dans_la_frange_sombre": true
+  },
+  "decalage_frange_mesure_px": -1.0,
+  "decalage_frange_predit_par_somme_de_chemins": 0.0,
+  "accord_dans_tolerance_20pct": false,
+  "variation_energie_par_plaque": 0.0,
+  "variation_max_autorisee": 0.05,
+  "note": "plaque de phase pure : |T|=1, l'energie est conservee par construction — le test porte sur le DEPLACEMENT des franges"
+}

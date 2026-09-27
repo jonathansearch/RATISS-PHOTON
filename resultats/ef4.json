@@ -1,0 +1,19 @@
+{
+  "courants_2_fentes_z420": {
+    "jy_max": 0.00025943147422180426,
+    "contre_flux_zones_sombres": -0.0007118313331266711,
+    "flux_net": -3.445380150922167e-08,
+    "rapport_contreflux_sur_jmax": -2.7438125434159226
+  },
+  "blocage_branche_superieure_z362_600": {
+    "ratio_intensite_branche_ouverte_stations": {
+      "500": 0.9990854379699493,
+      "700": 0.9754286973489571,
+      "900": 0.9612095326774944
+    },
+    "visibilite_fringes_reference": 0.7037278588938616,
+    "visibilite_fringes_blocage": 0.8232443438431922,
+    "correlation_motif_bloque_vs_reference": 0.37557142622332484
+  },
+  "prediction_lineaire": "superposition : blocage d'une branche ne REDISTRIBUE RIEN dans l'autre (ratio ~1 hors recouvrement) — mesure ci-dessus"
+}

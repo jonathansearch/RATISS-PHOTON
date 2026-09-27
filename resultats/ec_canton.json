@@ -1,0 +1,35 @@
+{
+  "reference": "Wen et al., Sci. Adv. 12, eaeh1011 (2026) — structure reproduite, PAS en competition",
+  "n_chemins_evalues": 26240,
+  "n_chemins_decomposition_3_plans": 8396800,
+  "fidelite_3_plans_vs_independant": 0.9595792818757559,
+  "correlation_intensite_3_plans_vs_spectral": 0.9707581029207072,
+  "controle_instruments": {
+    "correlation_spectral_vs_spectre_angulaire": 0.9605840638918693
+  },
+  "postulat_1_probabilites_par_superposition": {
+    "action_du_monde_paraxiale": {
+      "fidelite_amplitude_vs_independant": 0.9591952469774495,
+      "correlation_intensite_vs_independant": 0.9574503298316559,
+      "correlation_intensite_vs_spectral_complet": 0.9709596872389461
+    },
+    "action_naive_geometrique_k0_fois_distance": {
+      "fidelite_amplitude_vs_independant": 0.9677386969095946,
+      "correlation_intensite_vs_independant": 0.9657209481445349,
+      "correlation_intensite_vs_spectral_complet": 0.9745870604826742,
+      "lecture": "l'action n'est pas k0 x distance a vol d'oiseau : voir nuance postulat 2"
+    }
+  },
+  "postulat_2_modules_egaux_phase_action": {
+    "module_constant": true,
+    "module_egal_declare": true,
+    "accord_profil_phase_ecran_deg": 5.413272328311301,
+    "support_phase": "intensite > 10 pourcent du max",
+    "nuance_majeure": "dans un monde paraxial, l'action classique est QUADRATIQUE (k0·dz + k0·dy²/2dz) : le postulat 2 de Canton doit etre lu avec l'action DU MONDE — la lecture geometrique naive echoue."
+  },
+  "mape_R_K_reconstruit_vs_paraxial": {
+    "moyenne": 2.932080351804941e-14,
+    "ecart_type": 1.0231892727421022e-14,
+    "reference_canton": 0.0817
+  }
+}

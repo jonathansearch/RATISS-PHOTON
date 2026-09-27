@@ -1,0 +1,15 @@
+{
+  "minima_theoriques_cote_minus": [
+    69.9952825796394,
+    141.11506295261773
+  ],
+  "minima_mesures_cote_minus": [
+    -68.0,
+    -156.0
+  ],
+  "ecarts_relatifs": [
+    0.028505957917509605,
+    0.10548085183776723
+  ],
+  "accord_15pct": true
+}
