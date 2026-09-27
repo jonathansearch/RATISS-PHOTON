@@ -81,10 +81,11 @@ python3 outils/figures.py   # → assets/fig_*.png (numpy + matplotlib)
 
 <img src="assets/vue3d.gif" width="100%" alt="vue 3D du couloir : hauteur = |psi|², couleur = phase">
 
-**Rotation interactive en JavaScript pur** (Canvas 2D, algorithme du peintre, pas de Three.js,
-pas de CDN, 10 Ko, hors ligne) : [`visualisation.html`](visualisation.html) — et la version
-**en ligne sur GitHub Pages** : <https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html>.
-Rotation à la souris, zoom à la molette, relief réglable. Régénération :
+L'animation ci-dessus est rendue par **le moteur officiel de Plotly (kaleido)** — le même outil
+que la vue interactive : même scène, mêmes données scellées, 40 angles de caméra.
+**La version INTERACTIVE** (rotation 1 doigt, zoom 2 doigts, l'outil standard des labos) :
+[`visualisation.html`](visualisation.html) — **en ligne sur GitHub Pages** :
+<https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html>. Régénération :
 
 ```bash
 python3 outils/exporter_vue3d.py   # la version interactive (HTML autonome)

@@ -1,80 +1,99 @@
 #!/usr/bin/env python3
-"""GIF VUE 3D — animation de préview pour le README (depuis les données scellées).
+"""GIF VUE 3D — rendu PAR PLOTLY/KALEIDO (le moteur officiel de Plotly).
 
-Le README GitHub n'execute pas de JavaScript : ce GIF montre la surface
-hauteur = |psi(z,y)|², couleur = phase, qui pivote. La version INTERACTIVE
-(vue 3D JS pur) est hebergee via GitHub Pages — voir README.
+Apres la decision C2 (fini le fait-main), ce GIF est produit par le meme
+outil que la vue interactive : la scene Plotly de exporter_vue3d.py,
+photographiée sous 40 angles de camera par kaleido (moteur de rendu
+statique officiel de Plotly), puis assemblee en GIF.
 
-Usage : python3 outils/gif_vue3d.py   → assets/vue3d.gif
+Usage : python3 outils/gif_vue3d.py   → assets/vue3d.gif (pour le README)
 """
 from __future__ import annotations
 
 import pathlib
 
 import numpy as np
+import plotly.graph_objects as go
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
-CH = RACINE / "champs"
 AS = RACINE / "assets"
+AS.mkdir(exist_ok=True)
 
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt  # noqa: E402
-from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: E402
-from matplotlib.colors import hsv_to_rgb  # noqa: E402
-
-FOND, PANNEAU = "#060813", "#0b1122"
-
-pile = np.load(CH / "pile_reference.npy").astype(complex)
-zs = np.load(CH / "pile_reference_z.npy")
-
-# decimation + cadrage sur la zone d'interference (apres les fentes)
-sel = zs >= 340
-pile = pile[sel][::2, ::2]
-zs = zs[sel]
+# ---- la meme scene que exporter_vue3d.py (source unique de verite) ----------
+pile = np.load(RACINE / "champs" / "pile_reference.npy").astype(complex)
+zs = np.load(RACINE / "champs" / "pile_reference_z.npy")
+pile = pile[::2, ::2]
 amp = np.abs(pile)
 amp = amp / amp.max()
 phase = np.angle(pile)
+NY_PTS = pile.shape[1]
 
-NZ, NY = amp.shape
-z = (zs[::2] - zs[::2].mean())
-y = np.arange(NY) - NY // 2
-Zg, Yg = np.meshgrid(z, y, indexing="ij")
+y = np.linspace(-0.5, 0.5, NY_PTS)
+z_world = (zs - (zs[0] + zs[-1]) / 2) / (zs[-1] - zs[0]) * 3.2
+Zg, Yg = np.meshgrid(z_world, y, indexing="ij")
 
-# facecolors : phase -> teinte (cyan-turquoise), amplitude -> luminosite
-hue = (phase + np.pi) / (2 * np.pi)
-hsv = np.zeros(hue.shape + (3,))
-hsv[..., 0] = 0.48 + 0.08 * np.sin(2 * np.pi * hue)   # autour du cyan
-hsv[..., 1] = 0.85
-hsv[..., 2] = np.clip(0.25 + 1.6 * amp, 0, 1)
-face = hsv_to_rgb(hsv)
-face = np.repeat(face, 2, axis=0)[:-1, :, :]
-face = np.repeat(face, 2, axis=1)[:, :-1, :]
-hmax = 120
+colorsphase = [
+    [0.00, "rgb(6, 8, 19)"], [0.20, "rgb(10, 60, 120)"],
+    [0.42, "rgb(20, 150, 200)"], [0.62, "rgb(45, 212, 191)"],
+    [0.80, "rgb(45, 212, 191)"], [1.00, "rgb(153, 246, 228)"],
+]
 
-plt.rcParams.update({"figure.facecolor": FOND, "savefig.facecolor": FOND,
-                     "text.color": "#e2e8f0", "axes.labelcolor": "#8ba3c7"})
-fig = plt.figure(figsize=(7.2, 4.6), dpi=90)
-ax = fig.add_subplot(111, projection="3d")
-ax.set_facecolor(PANNEAU)   # le patch 3D : sinon rectangle blanc par defaut
-surf = ax.plot_surface(Zg, Yg, amp * hmax, facecolors=face, rstride=1, cstride=1,
-                       linewidth=0, antialiased=False, shade=False)
-ax.set_zlim(0, hmax)
-ax.set_xlim(z.min(), z.max())
-ax.set_ylim(-NY / 2, NY / 2)
-ax.set_axis_off()
-ax.view_init(elev=28, azim=-55)
-fig.text(0.5, 0.94, "RATISS-PHOTON · hauteur = |ψ(z,y)|² · couleur = phase",
-         ha="center", fontsize=11, color="#99f6e4", fontweight="bold")
-fig.text(0.5, 0.045, "un photon unique · deux fentes · version interactive : visualisation.html",
-         ha="center", fontsize=8, color="#8ba3c7")
+fig = go.Figure()
+fig.add_trace(go.Surface(
+    x=Zg, y=Yg, z=amp * 0.45, surfacecolor=phase, cmin=-np.pi, cmax=np.pi,
+    colorscale=colorsphase, showscale=False,
+    lighting=dict(ambient=0.85, diffuse=0.5, specular=0.15, roughness=0.9),
+    lightposition=dict(x=1, y=0, z=3), hoverinfo="skip", showlegend=False,
+))
+I_ecran = amp[-1]
+fig.add_trace(go.Scatter3d(
+    x=np.full(NY_PTS, z_world[-1]), y=y, z=I_ecran * 0.45 * 1.05 + 0.005,
+    mode="lines", line=dict(color="#7df9ff", width=9), hoverinfo="skip", showlegend=False,
+))
+zf = (360 - (zs[0] + zs[-1]) / 2) / (zs[-1] - zs[0]) * 3.2
+for (a, b) in [(-0.5, -78 / 320), (-42 / 320, 42 / 320), (78 / 320, 0.5)]:
+    fig.add_trace(go.Scatter3d(x=[zf, zf], y=[a, b], z=[0, 0], mode="lines",
+                               line=dict(color="#f1f5f9", width=7), hoverinfo="skip", showlegend=False))
+zp = (640 - (zs[0] + zs[-1]) / 2) / (zs[-1] - zs[0]) * 3.2
+fig.add_trace(go.Scatter3d(x=[zp, zp], y=[-30 / 320, 30 / 320], z=[0, 0], mode="lines",
+                           line=dict(color="#fbbf24", width=10), hoverinfo="skip", showlegend=False))
 
+fig.update_layout(
+    title=dict(
+        text="<b>RATISS-PHOTON · hauteur = |ψ(z,y)|² · couleur = phase</b>"
+             "<br><sup>un photon unique · deux fentes · 8 396 800 chemins · données scellées · calcul (RATISS)</sup>",
+        font=dict(color="#99f6e4", size=17, family="Georgia"), x=0.5,
+    ),
+    paper_bgcolor="#060813",
+    scene=dict(
+        bgcolor="#0a1024",
+        xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
+        aspectmode="manual", aspectratio=dict(x=2.3, y=0.9, z=0.65),
+    ),
+    margin=dict(l=0, r=0, t=90, b=10),
+    width=980, height=640,
+)
 
-def update(angle):
-    ax.view_init(elev=24 + 8 * np.sin(angle * 0.7), azim=-40 + 70 * np.sin(angle))
-    return []
+# ---- les 40 angles de camera, rendus par kaleido ----------------------------
+from PIL import Image  # noqa: E402
 
+N_FRAMES = 40
+cadres = []
+for k in range(N_FRAMES):
+    az = -65 + 26 * np.sin(2 * np.pi * k / N_FRAMES)
+    el = 21 + 6 * np.sin(4 * np.pi * k / N_FRAMES)
+    cam = dict(eye=dict(x=1.80 * np.cos(np.radians(az)) * np.cos(np.radians(el)),
+                        y=1.80 * np.sin(np.radians(az)) * np.cos(np.radians(el)),
+                        z=0.80))
+    fig.update_layout(scene_camera=cam)
+    png = fig.to_image(format="png", scale=1)   # kaleido : rendu officiel
+    cadres.append(Image.open(__import__("io").BytesIO(png)))
+    print(f"\r  rendu kaleido {k + 1}/{N_FRAMES}", end="")
+print()
 
-anim = FuncAnimation(fig, update, frames=np.linspace(0, 2 * np.pi, 48), interval=90)
-anim.save(AS / "vue3d.gif", writer=PillowWriter(fps=12), savefig_kwargs={"facecolor": FOND})
-print(f"assets/vue3d.gif écrit ({(AS / 'vue3d.gif').stat().st_size // 1024} Ko)")
+# ---- assemblage GIF ----------------------------------------------------------
+durations = [70] * N_FRAMES
+cadres[0].save(AS / "vue3d.gif", save_all=True, append_images=cadres[1:],
+               duration=durations, loop=0, optimize=True)
+print(f"assets/vue3d.gif écrit ({(AS / 'vue3d.gif').stat().st_size // 1024} Ko, "
+      f"{N_FRAMES} angles, rendu Plotly/kaleido)")
