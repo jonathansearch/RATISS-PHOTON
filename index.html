@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RATISS-PHOTON · RATISS Labs</title>
+<style>
+  html,body{margin:0;min-height:100%;background:#060813;color:#e2e8f0;
+    font-family:Georgia,'Times New Roman',serif}
+  .cadre{max-width:820px;margin:0 auto;padding:36px 22px 60px}
+  h1{font-size:26px;color:#99f6e4;letter-spacing:.5px;margin:0 0 6px}
+  .sous{color:#8ba3c7;font-size:14px;margin:0 0 26px}
+  .carte{background:#0b1122;border:1px solid #1e2a45;border-radius:14px;padding:22px;margin:16px 0}
+  a.grand{display:inline-block;background:#0e7c7b;color:#f1f5f9;text-decoration:none;font-weight:bold;
+    padding:12px 22px;border-radius:10px;font-size:16px;border:1px solid #2dd4bf}
+  a.grand:hover{background:#2dd4bf;color:#060813}
+  .lien{color:#38bdf8;word-break:break-all}
+  ul{color:#e2e8f0;line-height:1.7;font-size:14.5px}
+  .etiq{display:inline-block;background:#1e2a45;color:#99f6e4;border-radius:8px;
+    padding:3px 10px;font-size:12px;margin-top:14px}
+  img{max-width:100%;border-radius:10px}
+  .chiffres{color:#fbbf24;font-size:13.5px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="cadre">
+  <h1>🛰️→🧮 RATISS-PHOTON</h1>
+  <p class="sous">Un photon unique, deux fentes, 8 396 800 chemins · RATISS Labs · Yaoundé · 27/09/2026</p>
+
+  <div class="carte">
+    <a class="grand" href="visualisation.html">▶ OUVRIR LA VUE 3D INTERACTIVE</a>
+    <p style="color:#8ba3c7;font-size:13px;margin:12px 0 0">
+      Rotation à la souris · zoom à la molette · relief réglable — JavaScript pur, aucune dépendance.
+      Si ce bouton ne s'ouvre pas : lien direct
+      <a class="lien" href="visualisation.html">…/visualisation.html</a>
+      ou télécharge le fichier depuis le dépôt GitHub et ouvre-le hors ligne (il est 100 % autonome).
+    </p>
+  </div>
+
+  <div class="carte">
+    <b>La campagne en trois chiffres</b>
+    <p class="chiffres">
+      · fidélité somme-de-chemins ↔ ondes : <b>95,9 – 96,8 %</b> (fenêtre de Canton : 95 – 98,5 %)<br>
+      · le hasard ÉMERGE du bain thermique : à T = 0 K, <b>1 seule position d'impact sur 400</b><br>
+      · contre-flux fantômes mesurés entre les franges, flux net ≈ 0 · sceau SHA-256 : 32/32
+    </p>
+  </div>
+
+  <div class="carte">
+    <ul>
+      <li>Dépôt complet, protocole figé avant exécution : <a class="lien" href="https://github.com/jonathansearch/RATISS-PHOTON">github.com/jonathansearch/RATISS-PHOTON</a></li>
+      <li>Rapport, échecs publiés et 6 bugs documentés : <a class="lien" href="https://github.com/jonathansearch/RATISS-PHOTON/blob/main/RAPPORT.md">RAPPORT.md</a></li>
+      <li>Rejouer : <span class="lien">python3 experiences/campagne.py</span> (~1 s, graine 20260927)</li>
+    </ul>
+    <span class="etiq">🧮 calcul — aucune mesure QPU · MIT</span>
+  </div>
+
+  <div class="carte">
+    <img src="assets/vue3d.gif" alt="vue 3D du couloir : hauteur = |psi|^2, couleur = phase">
+    <p style="color:#8ba3c7;font-size:12px;margin:8px 0 0">
+      hauteur = |ψ(z,y)|² · couleur = phase — générée depuis les données scellées du dépôt.
+    </p>
+  </div>
+</div>
+</body>
+</html>
