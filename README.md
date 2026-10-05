@@ -4,54 +4,54 @@
 
 # 🛰️→🧮 RATISS-PHOTON
 
-**Un photon unique, deux fentes, 8,4 millions de chemins — et la question de Jonathan :*
-*la « probabilité », ça se déplace, oui ou non ?***
+**One photon, two slits, 8.4 million paths — and Jonathan's question:*
+*does "probability" travel, yes or no?***
 
-Campagne du **27/09/2026** · RATISS Labs (Yaoundé) · étiquette de terrain **🧮 calcul — AUCUNE mesure QPU** · MIT
+Campaign of **09/27/2026** · RATISS Labs (Yaoundé) · field tag **🧮 computation — NO QPU measurement** · MIT
 
-`fidélité 95,9 – 96,8 %` · `fenêtre de Canton : 95 – 98,5 %` · `8 396 800 chemins évalués` · `phase écran : 5,4°` · `sceau 28/28`
+`fidelity 95.9 – 96.8%` · `Canton window: 95 – 98.5%` · `8,396,800 paths evaluated` · `screen phase: 5.4°` · `seal 28/28`
 
 </div>
 
 ---
 
-## 🎯 L'hypothèse qu'on vient de tester
+## 🎯 The hypothesis we just tested
 
-L'expérience de l'Université normale de Chine du Sud (**Wen et al., Science Advances 12, eaeh1011,
-26/08/2026**) a mesuré les amplitudes de **1 419 857 chemins** de photons uniques et confirmé les deux
-postulats de Feynman avec une fidélité de 95 à 98,5 %. Notre question n'était PAS de les refaire :
+The experiment of South China Normal University (**Wen et al., Science Advances 12, eaeh1011,
+08/26/2026**) measured the amplitudes of **1,419,857 paths** of single photons and confirmed the two
+Feynman postulates with a fidelity of 95 to 98.5%. Our question was NOT to redo it:
 
-> **H1** — la probabilité a un support physique (une « tension topologique » du milieu, pas un simple nombre) ;
-> **H2** — le hasard de la mesure vient de la thermodynamique du détecteur, pas d'un dé magique ;
-> **H3** — les chemins invisibles portent une phase (une plaque posée dans le noir doit décaler les franges) ;
-> **H4** — des courants internes circulent entre les branches avant la mesure.
+> **H1** — probability has a physical substrate (a "topological tension" of the medium, not a mere number);
+> **H2** — the randomness of measurement comes from the detector's thermodynamics, not from a magic die;
+> **H3** — invisible paths carry a phase (a plate placed in the dark must shift the fringes);
+> **H4** — internal currents circulate between the branches before measurement.
 
-On a donc **reconstitué leur expérience à notre façon dans l'univers simulé RATISS**, et on a mesuré
-ce qui se passe — sans critère de validité imposé, sans compétition : on mesure, on nomme, on publie.
+So we **rebuilt their experiment our way in the RATISS simulated universe**, and we measured
+what happens — with no imposed validity criterion, no competition: we measure, we name, we publish.
 
-## 📌 Tu ouvres ce dépôt sans contexte ? Lis dans cet ordre
+## 📌 Opening this repository without context? Read in this order
 
-| Ordre | Fichier | Pourquoi |
+| Order | File | Why |
 |---|---|---|
-| **1** | [`FEUILLE-NECESSITE.md`](FEUILLE-NECESSITE.md) | Tous les paramètres physiques (photon, vide, atomes, T, « viscosité ») — reconnus académiquement, sans silo. |
-| **2** | [`PROTOCOLE.md`](PROTOCOLE.md) | Critères et tolérances **figés avant exécution** (R5). |
-| **3** | [`spec_physics.md`](spec_physics.md) | Les hypothèses H1–H4 et le milieu, écrits avant le moteur. |
-| **4** | [`RAPPORT.md`](RAPPORT.md) | Les résultats, les échecs et les 6 bugs documentés. |
-| **5** | [`visualisation.html`](visualisation.html) | **Le couloir du photon en 3D interactive** — JavaScript pur, zéro dépendance. Version en ligne : **[jonathansearch.github.io/RATISS-PHOTON](https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html)** |
+| **1** | [`FEUILLE-NECESSITE.md`](FEUILLE-NECESSITE.md) | All the physical parameters (photon, vacuum, atoms, T, "viscosity") — academically recognized, with no silo. |
+| **2** | [`PROTOCOLE.md`](PROTOCOLE.md) | Criteria and tolerances **frozen before execution** (R5). |
+| **3** | [`spec_physics.md`](spec_physics.md) | Hypotheses H1–H4 and the medium, written before the engine. |
+| **4** | [`RAPPORT.md`](RAPPORT.md) | The results, the failures and the 6 documented bugs. |
+| **5** | [`visualisation.html`](visualisation.html) | **The photon's corridor in interactive 3D** — pure JavaScript, zero dependency. Online version: **[jonathansearch.github.io/RATISS-PHOTON](https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html)** |
 
-## 📊 Les verdicts (tous rejouables, chiffres dans `resultats/`)
+## 📊 The verdicts (all replayable, numbers in `resultats/`)
 
-| Expérience | Résultat mesuré | Verdict |
+| Experiment | Measured result | Verdict |
 |---|---|---|
-| **E-CANTON** · postulat 1 (somme de chemins vs ondes) | fidélité **95,9 %** (2 plans) · **96,0 %** (3 plans, 8,4 M chemins) · corr. intensité **97,1 %** | ✅ dans la fenêtre de Canton (95–98,5 %) |
-| **E-CANTON** · postulat 2 (module égal, phase = action) | module constant ✔ · profil de phase à **5,4°** près · MAPE R_K ≈ **0 %** (plancher numérique ; Canton : 8,17 % instrumental) | ✅ **avec l'action du monde** |
-| **E-F1** · plaque π/2 sur la frange sombre (H3) | décalage mesuré **−1 px**, prédit **0 px** — effet **sub-pixel** à φ₀ = π/2 | ⚠️ non tranché : il faudrait φ₀ plus grand (prochaine campagne) |
-| **E-F2** · entropie & vortex (H1) | entropie 2 fentes **4,92** > 1 fente **4,27** · vortex comptés avec porte en amplitude | ✅ mesuré et nommé (première cartographie) |
-| **E-F3** · le hasard vient-il du bain ? (H2) | à **T = 0 K : 1 seule position d'impact sur 400** (déterminisme) · à 300 K : Pearson r = 0,73 · à 4×T : le bruit noie la figure (r = 0,24) | ✅ **le hasard ÉMERGE du bain, jamais d'ailleurs** |
-| **E-F4** · flux fantômes & blocage (H4) | contre-flux mesurés dans les bandes sombres, **flux net ≈ 0** ✔ · mais blocage d'une branche → **aucune redistribution** dans l'autre (ratios 1,00 / 0,98 / 0,96) : le monde linéaire interdit la réinjection | ✅ courants ✔ / ❌ redistribution (falsifié en-monde) |
-| **E-F5** · étalon interne une fente | 1er minimum mesuré **−68 px** vs théorie **−70 px** (écart 2,9 %) | ✅ l'étalon tient |
+| **E-CANTON** · postulate 1 (sum of paths vs waves) | fidelity **95.9%** (2 planes) · **96.0%** (3 planes, 8.4 M paths) · intensity corr. **97.1%** | ✅ inside the Canton window (95–98.5%) |
+| **E-CANTON** · postulate 2 (equal module, phase = action) | constant module ✔ · phase profile to within **5.4°** · MAPE R_K ≈ **0%** (numerical floor; Canton: 8.17% instrumental) | ✅ **with the world's action** |
+| **E-F1** · π/2 plate on the dark fringe (H3) | measured shift **−1 px**, predicted **0 px** — **sub-pixel** effect at φ₀ = π/2 | ⚠️ undecided: would need a larger φ₀ (next campaign) |
+| **E-F2** · entropy & vortices (H1) | 2-slit entropy **4.92** > 1-slit **4.27** · vortices counted with an amplitude gate | ✅ measured and named (first mapping) |
+| **E-F3** · does randomness come from the bath? (H2) | at **T = 0 K: a single impact position out of 400** (determinism) · at 300 K: Pearson r = 0.73 · at 4×T: the noise drowns the pattern (r = 0.24) | ✅ **randomness EMERGES from the bath, never from elsewhere** |
+| **E-F4** · ghost fluxes & blocking (H4) | counter-fluxes measured in the dark bands, **net flux ≈ 0** ✔ · but blocking one branch → **no redistribution** in the other (ratios 1.00 / 0.98 / 0.96): the linear world forbids re-injection | ✅ currents ✔ / ❌ redistribution (falsified in-world) |
+| **E-F5** · internal single-slit standard | 1st minimum measured **−68 px** vs theory **−70 px** (2.9% gap) | ✅ the standard holds |
 
-## 🖼️ Les figures — tracées depuis les données scellées
+## 🖼️ The figures — plotted from the sealed data
 
 ```bash
 python3 outils/figures.py   # → assets/fig_*.png (numpy + matplotlib)
@@ -59,104 +59,104 @@ python3 outils/figures.py   # → assets/fig_*.png (numpy + matplotlib)
 
 <div align="center">
 
-**Le couloir — un photon, deux fentes, le champ reconstruit**
+**The corridor — one photon, two slits, the reconstructed field**
 
-<img src="assets/fig_couloir.png" width="100%" alt="carte |psi(z,y)|² du couloir">
+<img src="assets/fig_couloir.png" width="100%" alt="map of |psi(z,y)|² of the corridor">
 
-**E-CANTON — les chemins retrouvent les ondes**
+**E-CANTON — the paths recover the waves**
 
-<img src="assets/fig_ec_canton.png" width="100%" alt="somme de chemins vs spectre angulaire">
+<img src="assets/fig_ec_canton.png" width="100%" alt="sum of paths vs angular spectrum">
 
-**E-F3 — la statistique de Born émerge du bain thermique**
+**E-F3 — Born's statistics emerges from the thermal bath**
 
-<img src="assets/fig_ef3_bain.png" width="100%" alt="Pearson vs température du bain">
+<img src="assets/fig_ef3_bain.png" width="100%" alt="Pearson vs bath temperature">
 
-**E-F4/E-F5 — courants fantômes et étalon interne**
+**E-F4/E-F5 — ghost currents and internal standard**
 
-<img src="assets/fig_ef4_ef5.png" width="100%" alt="courants j_y et diffraction une fente">
+<img src="assets/fig_ef4_ef5.png" width="100%" alt="j_y currents and single-slit diffraction">
 
 </div>
 
-## 🌌 La vue 3D — animation du couloir (données scellées)
+## 🌌 The 3D view — corridor animation (sealed data)
 
-<img src="assets/vue3d.gif" width="100%" alt="vue 3D du couloir : hauteur = |psi|², couleur = phase">
+<img src="assets/vue3d.gif" width="100%" alt="3D view of the corridor: height = |psi|², color = phase">
 
-L'animation ci-dessus est rendue par **le moteur officiel de Plotly (kaleido)** — le même outil
-que la vue interactive : même scène, mêmes données scellées, 40 angles de caméra.
-**La version INTERACTIVE** (rotation 1 doigt, zoom 2 doigts, l'outil standard des labos) :
-[`visualisation.html`](visualisation.html) — **en ligne sur GitHub Pages** :
-<https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html>. Régénération :
+The animation above is rendered by **the official Plotly engine (kaleido)** — the same tool
+as the interactive view: same scene, same sealed data, 40 camera angles.
+**The INTERACTIVE version** (rotate with 1 finger, zoom with 2, the standard tool of labs):
+[`visualisation.html`](visualisation.html) — **online on GitHub Pages**:
+<https://jonathansearch.github.io/RATISS-PHOTON/visualisation.html>. Regeneration:
 
 ```bash
-python3 outils/exporter_vue3d.py   # la version interactive (HTML autonome)
-python3 outils/gif_vue3d.py        # l'animation de préview du README
+python3 outils/exporter_vue3d.py   # the interactive version (standalone HTML)
+python3 outils/gif_vue3d.py        # the README preview animation
 ```
 
-## ▶️ Rejouer (R7 : une commande, un étranger, zéro permission)
+## ▶️ Replay (R7: one command, a stranger, zero permission)
 
 ```bash
 git clone https://github.com/jonathansearch/RATISS-PHOTON.git
 cd RATISS-PHOTON
 pip install numpy scipy matplotlib
 
-python3 experiences/campagne.py   # toute la campagne : ~1 s, graine 20260927
-python3 outils/figures.py         # les 4 figures
-python3 outils/exporter_vue3d.py  # la vue 3D
-python3 outils/manifeste.py --verifier   # le sceau SHA-256
+python3 experiences/campagne.py   # the whole campaign: ~1 s, seed 20260927
+python3 outils/figures.py         # the 4 figures
+python3 outils/exporter_vue3d.py  # the 3D view
+python3 outils/manifeste.py --verifier   # the SHA-256 seal
 ```
 
-## 🔧 Les 6 bugs rencontrés — publiés, parce que la loi n°2 du labo dit que les bugs se documentent
+## 🔧 The 6 bugs encountered — published, because the lab's law #2 says bugs get documented
 
-| # | Bug | Conséquence | Correction |
+| # | Bug | Consequence | Fix |
 |---|---|---|---|
-| B1 | gaussienne source centrée au **bord** du domaine (Y0 soustrait 2 fois) | le photon volait sur la lisière du monde, moitié coupée | centrage corrigé |
-| B2 | fentes décalées d'un Y0 | **une seule fente ouverte, au mauvais endroit** | repères unifiés |
-| B3 | action naïve `k0×distance` vs action du monde | à 51° d'angle, MAPE 194 % ! | les deux actions cohabitent, la comparaison EST le résultat |
-| B4 | vortex comptés dans le bruit de phase des zones sombres | 926 faux vortex | porte en amplitude déclarée |
-| B5 | moteur v1 : paquet 2D en boîte, masques appliqués à un instant | le paquet **traversait les masques** | moteur **paraxial v2** (l'équation même de Wen et al.) |
-| B6 | spectre angulaire : chirpe de signe inverse | l'instrument indépendant divergeait au lieu de diffacter | signe corrigé → fidélité 29 % → **95,9 %** |
+| B1 | source gaussian centered on the **edge** of the domain (Y0 subtracted twice) | the photon flew on the rim of the world, half cut off | centering fixed |
+| B2 | slits shifted by one Y0 | **only one slit open, in the wrong place** | reference frames unified |
+| B3 | naive action `k0×distance` vs the world's action | at 51° angle, MAPE 194%! | both actions cohabit, the comparison IS the result |
+| B4 | vortices counted in the phase noise of dark zones | 926 fake vortices | amplitude gate declared |
+| B5 | engine v1: 2D packet in a box, masks applied at one instant | the packet **crossed the masks** | **paraxial engine v2** (the very equation of Wen et al.) |
+| B6 | angular spectrum: chirp of opposite sign | the independent instrument diverged instead of diffracting | sign fixed → fidelity 29% → **95.9%** |
 
-## ⚖️ Ce que la campagne établit — et ce qu'elle n'établit pas
+## ⚖️ What the campaign establishes — and what it does not
 
-**Elle établit (dans le monde RATISS) :**
-- que la somme de chemins à **module égal** — postulats de Feynman, structure de Canton —
-  **retrouve les ondes** à 96–97 %, avec 8,4 M de chemins, dans un moteur totalement indépendant ;
-- que le **hasard de la détection peut émerger d'un bain thermique** sans aucun tirage de Born câblé,
-  et qu'à T = 0 le monde est déterministe ;
-- que des **courants de probabilité** circulent entre les franges (flux net nul) ;
-- que le **blocage d'une branche ne réinjecte rien** dans l'autre — la linéarité l'interdit : c'est
-  une **limite mesurée** de H4, publiée comme telle ;
-- une **nuance de lecture** du postulat 2 : dans un monde paraxial, l'action est quadratique
-  (`k0·dz + k0·dy²/2dz`) — à nos angles (≤ 12°) les deux lectures concordent (95,9 vs 96,8 %).
+**It establishes (in the RATISS world):**
+- that the sum of paths with **equal module** — Feynman's postulates, Canton's structure —
+  **recovers the waves** at 96–97%, with 8.4 M paths, in a fully independent engine;
+- that the **randomness of detection can emerge from a thermal bath** with no wired Born draw,
+  and that at T = 0 the world is deterministic;
+- that **probability currents** circulate between the fringes (zero net flux);
+- that **blocking one branch re-injects nothing** into the other — linearity forbids it: this is a
+  **measured limit** of H4, published as such;
+- a **reading nuance** of postulate 2: in a paraxial world, the action is quadratic
+  (`k0·dz + k0·dy²/2dz`) — at our angles (≤ 12°) both readings agree (95.9 vs 96.8%).
 
-**Elle n'établit pas :**
-- **rien sur les photons réels** : c'est un simulateur linéaire écrit par nous — la cohérence interne
-  de H1–H4 est testée, pas la nature de la lumière. Canton a mesuré le réel ; nous, le monde ;
-- que H2 est *nécessaire* : elle est *suffisante* en-monde (construite dedans, testée par ablation) ;
-- l'inertie des chemins invisibles à φ₀ = π/2 (effet sub-pixel — E-F1 non tranché) ;
-- rien sur la polarisation, le spin, le QED du vide, la gravité — hors modèle, déclaré dans la
+**It does not establish:**
+- **anything about real photons**: this is a linear simulator written by us — the internal
+  consistency of H1–H4 is tested, not the nature of light. Canton measured the real; we, the world;
+- that H2 is *necessary*: it is *sufficient* in-world (built into it, tested by ablation);
+- the inertia of invisible paths at φ₀ = π/2 (sub-pixel effect — E-F1 undecided);
+- anything about polarization, spin, the QED of the vacuum, gravity — outside the model, declared in
   [`FEUILLE-NECESSITE.md`](FEUILLE-NECESSITE.md).
 
-## 🧬 Écosystème RATISS Labs
+## 🧬 RATISS Labs ecosystem
 
-| Dépôt | Rôle |
+| Repository | Role |
 |---|---|
-| [`RATISS-ARCHIVES`](https://github.com/jonathansearch/RATISS-ARCHIVES) | la mémoire du labo (preuves, registre QPU, identité) |
-| [`RATISS-ETALONS`](https://github.com/jonathansearch/RATISS-ETALONS) | les 4 étalons qui ont autorisé nos instruments à servir |
-| [`RATISS-QVM`](https://github.com/jonathansearch/RATISS-QVM) · [`ratiss-focal`](https://github.com/jonathansearch/ratiss-focal) | les moteurs et la théorie de la focalisation informationnelle |
-| [Site officiel](https://jonathansearch.github.io/ratiss-labs-site/) · [ORCID](https://orcid.org/0009-0000-4092-5313) | l'audit scientifique exécutable, hors GitHub |
+| [`RATISS-ARCHIVES`](https://github.com/jonathansearch/RATISS-ARCHIVES) | the lab's memory (evidence, QPU registry, identity) |
+| [`RATISS-ETALONS`](https://github.com/jonathansearch/RATISS-ETALONS) | the 4 standards that qualified our instruments for service |
+| [`RATISS-QVM`](https://github.com/jonathansearch/RATISS-QVM) · [`ratiss-focal`](https://github.com/jonathansearch/ratiss-focal) | the engines and the theory of informational focusing |
+| [Official website](https://jonathansearch.github.io/ratiss-labs-site/) · [ORCID](https://orcid.org/0009-0000-4092-5313) | the executable scientific audit, off GitHub |
 
-## 📜 Les règles appliquées ici
+## 📜 The rules applied here
 
-1. **Critères figés avant exécution** (`PROTOCOLE.md`, 27/09/2026) — rien n'a bougé après.
-2. **Chaque hypothèse est testée par ablation** (avec/sans bain, avec/sans branche, 2 fentes/1 fente).
-3. **Ce qui échoue est publié** : E-F1 non tranché, redistribution falsifiée, 6 bugs racontés.
-4. **🧮 calcul, jamais 🛰️ QPU** — aucune mesure matérielle dans ce dépôt.
-5. **Graine unique** `20260927`, tout se rejoue en ~1 seconde.
+1. **Criteria frozen before execution** (`PROTOCOLE.md`, 09/27/2026) — nothing moved afterwards.
+2. **Every hypothesis tested by ablation** (with/without bath, with/without branch, 2 slits/1 slit).
+3. **What fails is published**: E-F1 undecided, redistribution falsified, 6 bugs told.
+4. **🧮 computation, never 🛰️ QPU** — no hardware measurement in this repository.
+5. **Single seed** `20260927`, everything replays in ~1 second.
 
 ---
 
-*RATISS Labs · Jonathan Evina · Yaoundé · 27/09/2026 · MIT*
-*Référence croisée : Wen, Tian, Wang et al., « Direct experimental test of Feynman's path integral
-postulates with single photons », Science Advances 12, eaeh1011 (2026). Nous ne sommes pas en
-compétition : ils ont mesuré le réel, nous testons la consistance de notre monde.* 🔒
+*RATISS Labs · Jonathan Evina · Yaoundé · 09/27/2026 · MIT*
+*Cross-reference: Wen, Tian, Wang et al., "Direct experimental test of Feynman's path integral
+postulates with single photons", Science Advances 12, eaeh1011 (2026). We are not in
+competition: they measured the real, we test the consistency of our world.* 🔒
